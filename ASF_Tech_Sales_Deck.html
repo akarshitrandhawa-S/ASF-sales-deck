@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASF Platform - Technical Sales Deck</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Slide 1 - Title Slide */
+        .slide-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .slide-1::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+        }
+
+        .slide-1::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+        }
+
+        .title-content {
+            z-index: 10;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            margin: 10px;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Slide 2 - Architecture */
+        .slide-2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .arch-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .arch-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .arch-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .arch-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .arch-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Slide 3 - QA & Testing */
+        .slide-3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 40px 60px;
+        }
+
+        .qa-container {
+            max-width: 1200px;
+            width: 100%;
+            z-index: 10;
+            margin: auto;
+        }
+
+        .qa-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .qa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .qa-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .qa-card h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .qa-list {
+            list-style: none;
+        }
+
+        .qa-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .qa-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #00ff88;
+            font-size: 20px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide > * {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Navigation hint */
+        .nav-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0.7;
+            z-index: 100;
+        }
+
+        .arrow {
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Print styles for PowerPoint export */
+        @media print {
+            .slide-container {
+                overflow: visible;
+            }
+            .slide {
+                page-break-after: always;
+                height: 100vh;
+            }
+            .nav-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide slide-1">
+            <div class="title-content">
+                <h1 class="main-title">Agentic Solutions Framework</h1>
+                <p class="subtitle">Next-Generation AI Orchestration Platform</p>
+                <div style="margin-top: 40px;">
+                    <span class="tech-badge">🚀 Multi-Cluster Architecture</span>
+                    <span class="tech-badge">🤖 AI-Powered Automation</span>
+                    <span class="tech-badge">🔒 Enterprise Security</span>
+                </div>
+                <div style="margin-top: 20px;">
+                    <span class="tech-badge">FastAPI</span>
+                    <span class="tech-badge">React</span>
+                    <span class="tech-badge">PostgreSQL</span>
+                    <span class="tech-badge">AWS ECS</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Architecture -->
+        <div class="slide slide-2">
+            <h2 class="slide-title">Platform Architecture</h2>
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-icon">🎯</div>
+                    <h3 class="arch-title">Control Plane</h3>
+                    <p class="arch-desc">
+                        FastAPI orchestration engine with LLM integration, process management, and real-time SSE telemetry
+                    </p>
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                        Backend • Models-Server • Apps-Service
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">🛠️</div>
+                    <h3 class="arch-title">Tools Cluster</h3>
+                    <p class="arch-desc">
+                        Isolated MCP tool servers with independent scaling for data extraction, CDM, and utilities
+                    </p>
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                        8+ Specialized Tool Services
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">🔌</div>
+                    <h3 class="arch-title">Connectors</h3>
+                    <p class="arch-desc">
+                        Governed integrations with Salesforce, HubSpot, GitHub, Twilio, cloud storage providers
+                    </p>
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                        Business • Comms • Storage Groups
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">☁️</div>
+                    <h3 class="arch-title">AWS Infrastructure</h3>
+                    <p class="arch-desc">
+                        Multi-AZ RDS, CloudFront CDN, S3 hosting, ECS Fargate with auto-scaling
+                    </p>
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                        Route53 • ALB • CloudWatch
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">🎨</div>
+                    <h3 class="arch-title">Frontend</h3>
+                    <p class="arch-desc">
+                        React + TypeScript workspace UI with Tailwind CSS, real-time process monitoring
+                    </p>
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                        S3 + CloudFront Delivery
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">🗄️</div>
+                    <h3 class="arch-title">Data Layer</h3>
+                    <p class="arch-desc">
+                        PostgreSQL with multi-tenancy, Alembic migrations, AWS Secrets Manager integration
+                    </p>
+                    <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+                        RDS Multi-AZ • Performance Insights
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: QA & Testing -->
+        <div class="slide slide-3">
+            <h2 class="slide-title">Quality Assurance & Security</h2>
+            <div class="qa-container">
+                <div class="qa-grid">
+                    <div class="qa-card">
+                        <h3>
+                            <span>🎭</span>
+                            Test Automation
+                        </h3>
+                        <ul class="qa-list">
+                            <li>Playwright for end-to-end testing</li>
+                            <li>Cross-browser compatibility verification</li>
+                            <li>Automated UI regression testing</li>
+                            <li>API integration test suites</li>
+                            <li>CI/CD pipeline integration</li>
+                            <li>Performance and load testing</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Playwright</span>
+                            <span class="tech-tag">Pytest</span>
+                            <span class="tech-tag">GitHub Actions</span>
+                        </div>
+                    </div>
+
+                    <div class="qa-card">
+                        <h3>
+                            <span>🔒</span>
+                            Security Testing
+                        </h3>
+                        <ul class="qa-list">
+                            <li>Penetration testing protocols</li>
+                            <li>OWASP Top 10 vulnerability scanning</li>
+                            <li>Authentication & authorization testing</li>
+                            <li>SQL injection prevention validation</li>
+                            <li>XSS and CSRF protection verification</li>
+                            <li>AWS security best practices audit</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Pen Testing</span>
+                            <span class="tech-tag">Security Audit</span>
+                            <span class="tech-tag">JWT Auth</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-hint">
+        <span class="arrow">↓</span> Scroll to navigate slides
+    </div>
+
+    <script>
+        // Add smooth scrolling behavior
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                    if (currentSlide < slides.length - 1) {
+                        currentSlide++;
+                        slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    if (currentSlide > 0) {
+                        currentSlide--;
+                        slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
