@@ -36,7 +36,132 @@
             padding: 60px;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 2000px;
         }
+
+        /* Slide Transition Effects */
+        
+        /* 1. 3D Page Flip Transition */
+        @keyframes pageFlipIn {
+            0% {
+                transform: perspective(2000px) rotateY(-90deg);
+                opacity: 0;
+            }
+            100% {
+                transform: perspective(2000px) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pageFlipOut {
+            0% {
+                transform: perspective(2000px) rotateY(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: perspective(2000px) rotateY(90deg);
+                opacity: 0;
+            }
+        }
+
+        /* 2. Cube Rotation Transition */
+        @keyframes cubeRotateIn {
+            0% {
+                transform: perspective(2000px) rotateX(-90deg) translateZ(-500px);
+                opacity: 0;
+            }
+            100% {
+                transform: perspective(2000px) rotateX(0deg) translateZ(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes cubeRotateOut {
+            0% {
+                transform: perspective(2000px) rotateX(0deg) translateZ(0);
+                opacity: 1;
+            }
+            100% {
+                transform: perspective(2000px) rotateX(90deg) translateZ(-500px);
+                opacity: 0;
+            }
+        }
+
+        /* 3. Zoom & Fade Transition */
+        @keyframes zoomFadeIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomFadeOut {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* 4. Slide & Stack Transition */
+        @keyframes slideStackIn {
+            0% {
+                transform: translateX(100%) scale(0.8);
+                opacity: 0;
+                box-shadow: -50px 0 100px rgba(0, 0, 0, 0.5);
+            }
+            100% {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+        }
+
+        @keyframes slideStackOut {
+            0% {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-100%) scale(0.8);
+                opacity: 0;
+                box-shadow: 50px 0 100px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        /* Apply transitions to slides */
+        .slide.transition-in {
+            animation-duration: 1s;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation-fill-mode: both;
+        }
+
+        .slide.transition-out {
+            animation-duration: 1s;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation-fill-mode: both;
+        }
+
+        /* Choose which transition to use (you can change this) */
+        .slide.transition-in.page-flip { animation-name: pageFlipIn; }
+        .slide.transition-out.page-flip { animation-name: pageFlipOut; }
+
+        .slide.transition-in.cube-rotate { animation-name: cubeRotateIn; }
+        .slide.transition-out.cube-rotate { animation-name: cubeRotateOut; }
+
+        .slide.transition-in.zoom-fade { animation-name: zoomFadeIn; }
+        .slide.transition-out.zoom-fade { animation-name: zoomFadeOut; }
+
+        .slide.transition-in.slide-stack { animation-name: slideStackIn; }
+        .slide.transition-out.slide-stack { animation-name: slideStackOut; }
 
         /* Slide 1 - Title Slide */
         .slide-1 {
@@ -52,6 +177,7 @@
             border-radius: 50%;
             top: -200px;
             right: -200px;
+            animation: rotate3D 20s infinite linear;
         }
 
         .slide-1::after {
@@ -63,6 +189,19 @@
             border-radius: 50%;
             bottom: -150px;
             left: -150px;
+            animation: rotate3D 15s infinite linear reverse;
+        }
+
+        @keyframes rotate3D {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
         }
 
         .title-content {
@@ -92,6 +231,36 @@
             margin: 10px;
             font-size: 18px;
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .tech-badge:hover {
+            transform: translateZ(20px) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .tech-badge:nth-child(1) {
+            animation: badgeFloat 3s ease-in-out infinite;
+        }
+
+        .tech-badge:nth-child(2) {
+            animation: badgeFloat 3s ease-in-out infinite 0.5s;
+        }
+
+        .tech-badge:nth-child(3) {
+            animation: badgeFloat 3s ease-in-out infinite 1s;
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         /* Slide 2 - Architecture */
@@ -114,18 +283,57 @@
             border-radius: 20px;
             padding: 30px;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .arch-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .arch-card:hover::before {
+            opacity: 1;
         }
 
         .arch-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: perspective(1000px) rotateY(10deg) rotateX(10deg) translateY(-15px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
         }
 
         .arch-icon {
             font-size: 48px;
             margin-bottom: 20px;
+            display: inline-block;
+            transition: transform 0.5s ease;
+            animation: iconPop 0.6s ease-out;
+        }
+
+        .arch-card:hover .arch-icon {
+            transform: translateZ(50px) scale(1.2) rotateY(360deg);
+        }
+
+        @keyframes iconPop {
+            0% {
+                transform: scale(0) rotateY(0deg);
+            }
+            50% {
+                transform: scale(1.3) rotateY(180deg);
+            }
+            100% {
+                transform: scale(1) rotateY(360deg);
+            }
         }
 
         .arch-title {
@@ -240,6 +448,325 @@
             animation: fadeInUp 0.8s ease-out;
         }
 
+        /* 1. Typing Effect on Main Title */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .main-title {
+            overflow: hidden;
+            border-right: 3px solid rgba(255, 255, 255, 0.75);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3s steps(30, end), blink 0.75s step-end infinite;
+            display: inline-block;
+        }
+
+        /* 2. Simple Card Entrance */
+        .arch-card {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .arch-card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Staggered entrance */
+        .arch-card:nth-child(1).visible { transition-delay: 0.1s; }
+        .arch-card:nth-child(2).visible { transition-delay: 0.2s; }
+        .arch-card:nth-child(3).visible { transition-delay: 0.3s; }
+        .arch-card:nth-child(4).visible { transition-delay: 0.4s; }
+        .arch-card:nth-child(5).visible { transition-delay: 0.5s; }
+        .arch-card:nth-child(6).visible { transition-delay: 0.6s; }
+
+        /* Active card expansion effect - SMOOTHER */
+        .arch-card.active-story {
+            transform: scale(1.12) translateY(-15px) !important;
+            z-index: 100;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 
+                        0 0 0 3px rgba(255, 255, 255, 0.6),
+                        0 0 40px rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            animation: smoothGlow 3s ease-in-out infinite;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Dimmed cards (not active) - SMOOTHER */
+        .arch-card.dimmed {
+            opacity: 0.5;
+            transform: scale(0.96);
+            filter: blur(0.5px) brightness(0.85);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Smoother glow pulse */
+        @keyframes smoothGlow {
+            0%, 100% {
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 
+                            0 0 0 3px rgba(255, 255, 255, 0.6),
+                            0 0 40px rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 35px 70px rgba(0, 0, 0, 0.5), 
+                            0 0 0 4px rgba(255, 255, 255, 0.8),
+                            0 0 60px rgba(255, 255, 255, 0.6);
+            }
+        }
+
+        /* Smoother transition when becoming active */
+        .arch-card {
+            will-change: transform, opacity, filter;
+        }
+
+        /* Card Description Tooltip - SMOOTHER */
+        .card-description {
+            position: fixed;
+            left: 50%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 20, 0.95));
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            max-width: 80%;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            z-index: 1500;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+            white-space: normal;
+            line-height: 1.6;
+            will-change: transform, opacity;
+        }
+
+        /* Position at top for bottom row cards (4, 5, 6) - SMOOTHER */
+        .card-description.position-top {
+            top: 120px;
+            transform: translateX(-50%) translateY(-30px) scale(0.95);
+        }
+
+        .card-description.position-top.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        /* Position at bottom for top row cards (1, 2, 3) - SMOOTHER */
+        .card-description.position-bottom {
+            bottom: 100px;
+            transform: translateX(-50%) translateY(30px) scale(0.95);
+        }
+
+        .card-description.position-bottom.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        /* Legacy story text - keeping for compatibility */
+        .story-text {
+            display: none;
+        }
+
+        /* 3. Hover Tilt Effect on Cards */
+        .arch-card {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .arch-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .qa-card {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .qa-card:hover {
+            transform: perspective(1000px) rotateX(3deg) rotateY(3deg) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 4. Floating Particles Background */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-50px) translateX(-50px);
+                opacity: 0.3;
+            }
+            75% {
+                transform: translateY(-150px) translateX(100px);
+                opacity: 0.6;
+            }
+        }
+
+        /* 5. Progress Indicator Dots */
+        .progress-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .progress-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.3);
+        }
+
+        .progress-dot.active {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transform: scale(1.4);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* 3D Geometric Shapes */
+        .shape-3d {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+            animation: float3D 25s infinite ease-in-out;
+        }
+
+        .cube-3d {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            animation: rotateCube 20s infinite linear;
+        }
+
+        .pyramid-3d {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid rgba(255, 255, 255, 0.2);
+            animation: rotatePyramid 15s infinite linear;
+        }
+
+        @keyframes float3D {
+            0%, 100% {
+                transform: translateY(0) translateX(0) rotateZ(0deg);
+            }
+            25% {
+                transform: translateY(-50px) translateX(50px) rotateZ(90deg);
+            }
+            50% {
+                transform: translateY(-100px) translateX(-50px) rotateZ(180deg);
+            }
+            75% {
+                transform: translateY(-50px) translateX(100px) rotateZ(270deg);
+            }
+        }
+
+        @keyframes rotateCube {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes rotatePyramid {
+            0% {
+                transform: rotateY(0deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateY(360deg) rotateZ(360deg);
+            }
+        }
+
+        /* Parallax 3D layers */
+        .parallax-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .parallax-layer-1 {
+            transform: translateZ(-100px) scale(1.1);
+        }
+
+        .parallax-layer-2 {
+            transform: translateZ(-50px) scale(1.05);
+        }
+
+        /* QA Card 3D Effects */
+        .qa-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.5s ease;
+        }
+
+        .qa-card:hover {
+            transform: perspective(1000px) rotateY(5deg) rotateX(5deg) translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 3D Text Shadow Effect */
+        .slide-title {
+            text-shadow: 
+                1px 1px 0px rgba(0,0,0,0.1),
+                2px 2px 0px rgba(0,0,0,0.1),
+                3px 3px 0px rgba(0,0,0,0.1),
+                4px 4px 0px rgba(0,0,0,0.1),
+                5px 5px 10px rgba(0,0,0,0.3);
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
         /* Navigation hint */
         .nav-hint {
             position: fixed;
@@ -300,6 +827,7 @@
         <!-- Slide 2: Architecture -->
         <div class="slide slide-2">
             <h2 class="slide-title">Platform Architecture</h2>
+            <div class="story-text" id="story-narrator"></div>
             <div class="arch-grid">
                 <div class="arch-card">
                     <div class="arch-icon">🎯</div>
@@ -423,25 +951,385 @@
         <span class="arrow">↓</span> Scroll to navigate slides
     </div>
 
+    <!-- Progress Indicator Dots -->
+    <div class="progress-dots">
+        <div class="progress-dot active" data-slide="0"></div>
+        <div class="progress-dot" data-slide="1"></div>
+        <div class="progress-dot" data-slide="2"></div>
+    </div>
+
     <script>
         // Add smooth scrolling behavior
         document.addEventListener('DOMContentLoaded', function() {
             const slides = document.querySelectorAll('.slide');
+            const progressDots = document.querySelectorAll('.progress-dot');
             let currentSlide = 0;
+
+            // Function to update progress dots
+            function updateProgressDots(index) {
+                progressDots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            // Choose your transition style here:
+            // Options: 'page-flip', 'cube-rotate', 'zoom-fade', 'slide-stack'
+            const transitionStyle = 'cube-rotate'; // Change this to try different effects!
+
+            // Apply slide transition
+            function applySlideTransition(fromIndex, toIndex) {
+                const fromSlide = slides[fromIndex];
+                const toSlide = slides[toIndex];
+                
+                if (fromSlide) {
+                    fromSlide.classList.add('transition-out', transitionStyle);
+                    setTimeout(() => {
+                        fromSlide.classList.remove('transition-out', transitionStyle);
+                    }, 1000);
+                }
+                
+                if (toSlide) {
+                    toSlide.classList.add('transition-in', transitionStyle);
+                    setTimeout(() => {
+                        toSlide.classList.remove('transition-in', transitionStyle);
+                    }, 1000);
+                }
+            }
 
             // Keyboard navigation
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
                     if (currentSlide < slides.length - 1) {
+                        const previousSlide = currentSlide;
                         currentSlide++;
+                        applySlideTransition(previousSlide, currentSlide);
                         slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+                        updateProgressDots(currentSlide);
                     }
                 } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                     if (currentSlide > 0) {
+                        const previousSlide = currentSlide;
                         currentSlide--;
+                        applySlideTransition(previousSlide, currentSlide);
                         slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+                        updateProgressDots(currentSlide);
                     }
                 }
+            });
+
+            // Click on progress dots to navigate
+            progressDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    const previousSlide = currentSlide;
+                    currentSlide = index;
+                    applySlideTransition(previousSlide, currentSlide);
+                    slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+                    updateProgressDots(currentSlide);
+                });
+            });
+
+            // Detect scroll and update progress dots
+            const slideContainer = document.querySelector('.slide-container');
+            slideContainer.addEventListener('scroll', function() {
+                const scrollPosition = slideContainer.scrollTop;
+                const slideHeight = window.innerHeight;
+                const newSlide = Math.round(scrollPosition / slideHeight);
+                if (newSlide !== currentSlide) {
+                    currentSlide = newSlide;
+                    updateProgressDots(currentSlide);
+                }
+            });
+
+            // Create floating particles
+            function createParticles() {
+                slides.forEach(slide => {
+                    const particleCount = 15;
+                    for (let i = 0; i < particleCount; i++) {
+                        const particle = document.createElement('div');
+                        particle.classList.add('particle');
+                        
+                        // Random size between 3px and 8px
+                        const size = Math.random() * 5 + 3;
+                        particle.style.width = size + 'px';
+                        particle.style.height = size + 'px';
+                        
+                        // Random position
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.top = Math.random() * 100 + '%';
+                        
+                        // Random animation delay and duration
+                        particle.style.animationDelay = Math.random() * 20 + 's';
+                        particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                        
+                        slide.appendChild(particle);
+                    }
+                });
+            }
+
+            createParticles();
+            create3DShapes();
+
+            // Story-based architecture animation
+            const storyNarrator = document.getElementById('story-narrator');
+            const archCards = document.querySelectorAll('.arch-card');
+            
+            const storyTexts = [
+                "🎯 Control Plane orchestrates all AI agents and manages workflows in real-time",
+                "🛠️ Tools Cluster provides specialized services for data extraction, processing, and utilities",
+                "🔌 Connectors integrate your business apps - Salesforce, HubSpot, GitHub, and more",
+                "☁️ AWS Infrastructure ensures high availability, auto-scaling, and enterprise-grade reliability",
+                "🎨 Frontend delivers an intuitive workspace for monitoring and controlling your agents",
+                "🗄️ Data Layer stores everything securely with multi-tenancy and instant access"
+            ];
+
+            let currentStoryIndex = -1;
+            let storyTimeout = null;
+
+            // Show all cards immediately
+            function showAllCards() {
+                archCards.forEach((card, index) => {
+                    card.classList.add('visible');
+                });
+                
+                // Wait for cards to appear, then start story
+                setTimeout(() => {
+                    showStoryCard(0);
+                }, 1000);
+            }
+
+            // Global description element
+            let globalDescription = null;
+
+            function showStoryCard(index) {
+                if (index >= archCards.length) {
+                    // Story finished - remove all active states
+                    archCards.forEach(card => {
+                        card.classList.remove('active-story', 'dimmed');
+                    });
+                    // Hide and remove description
+                    if (globalDescription) {
+                        globalDescription.classList.remove('visible');
+                        setTimeout(() => {
+                            if (globalDescription && globalDescription.parentNode) {
+                                globalDescription.remove();
+                            }
+                            globalDescription = null;
+                        }, 500);
+                    }
+                    // Mark story as completed
+                    storyCompleted = true;
+                    storyStarted = false;
+                    return;
+                }
+                
+                // Create global description if it doesn't exist
+                if (!globalDescription) {
+                    globalDescription = document.createElement('div');
+                    globalDescription.classList.add('card-description');
+                    document.body.appendChild(globalDescription);
+                }
+                
+                // Determine position based on card index
+                // Cards 0, 1, 2 are top row -> description goes to bottom
+                // Cards 3, 4, 5 are bottom row -> description goes to top
+                const isBottomRow = index >= 3;
+                
+                // Remove previous position classes
+                globalDescription.classList.remove('visible', 'position-top', 'position-bottom');
+                
+                // Add new position class
+                if (isBottomRow) {
+                    globalDescription.classList.add('position-top');
+                } else {
+                    globalDescription.classList.add('position-bottom');
+                }
+                
+                // Smoothly fade out previous description first
+                globalDescription.classList.remove('visible');
+                
+                // Wait for fade out, then update everything
+                setTimeout(() => {
+                    // Update active/dimmed states for visual focus
+                    archCards.forEach((card, i) => {
+                        card.classList.remove('active-story', 'dimmed');
+                        
+                        if (i === index) {
+                            // This is the active card - expand and highlight
+                            setTimeout(() => {
+                                card.classList.add('active-story');
+                            }, 100);
+                            
+                        } else if (card.classList.contains('visible')) {
+                            // Other visible cards - dim them
+                            card.classList.add('dimmed');
+                        }
+                    });
+                    
+                    // Update description text and show it
+                    globalDescription.textContent = storyTexts[index];
+                    setTimeout(() => {
+                        globalDescription.classList.add('visible');
+                    }, 400);
+                    
+                }, 300);
+                
+                // Clear previous timeout
+                if (storyTimeout) clearTimeout(storyTimeout);
+                
+                // Move to next card after 3.5 seconds (longer for smoother feel)
+                storyTimeout = setTimeout(() => {
+                    showStoryCard(index + 1);
+                }, 3500);
+            }
+
+            let storyStarted = false;
+            let storyCompleted = false; // Track if animation has been shown once
+
+            function startArchitectureStory() {
+                // Only play animation if not completed before
+                if (!storyCompleted && currentSlide === 1) {
+                    storyStarted = true;
+                    // Show all cards then start story
+                    setTimeout(() => {
+                        showAllCards();
+                    }, 300);
+                } else if (storyCompleted && currentSlide === 1) {
+                    // Animation already played - just show all cards immediately
+                    archCards.forEach(card => {
+                        card.classList.add('visible');
+                    });
+                }
+            }
+
+            function resetArchitectureStory() {
+                // Don't reset if story was completed - keep cards visible
+                if (storyCompleted) {
+                    // Just remove active/dimmed states, keep cards visible
+                    archCards.forEach(card => {
+                        card.classList.remove('active-story', 'dimmed');
+                    });
+                    // Remove description if exists
+                    if (globalDescription) {
+                        globalDescription.classList.remove('visible');
+                        setTimeout(() => {
+                            if (globalDescription && globalDescription.parentNode) {
+                                globalDescription.remove();
+                            }
+                            globalDescription = null;
+                        }, 500);
+                    }
+                    return;
+                }
+                
+                // Full reset only if story wasn't completed
+                storyStarted = false;
+                currentStoryIndex = -1;
+                if (storyTimeout) {
+                    clearTimeout(storyTimeout);
+                    storyTimeout = null;
+                }
+                // Reset all cards
+                archCards.forEach(card => {
+                    card.classList.remove('visible', 'active-story', 'dimmed');
+                });
+                // Remove global description
+                if (globalDescription) {
+                    globalDescription.classList.remove('visible');
+                    setTimeout(() => {
+                        if (globalDescription && globalDescription.parentNode) {
+                            globalDescription.remove();
+                        }
+                        globalDescription = null;
+                    }, 500);
+                }
+            }
+
+            // Detect when user is on slide 2 (Architecture)
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.target.classList.contains('slide-2')) {
+                        startArchitectureStory();
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            // Observe slide 2
+            const slide2 = document.querySelector('.slide-2');
+            observer.observe(slide2);
+
+            // Override updateProgressDots to trigger story
+            const originalUpdateProgressDots = updateProgressDots;
+            updateProgressDots = function(index) {
+                originalUpdateProgressDots(index);
+                
+                // Start story when entering slide 2
+                if (index === 1) {
+                    startArchitectureStory();
+                } 
+                // Reset story when leaving slide 2
+                else if (storyStarted) {
+                    resetArchitectureStory();
+                }
+            };
+
+            // Create 3D geometric shapes
+            function create3DShapes() {
+                slides.forEach((slide, slideIndex) => {
+                    // Add 3-5 shapes per slide
+                    const shapeCount = Math.floor(Math.random() * 3) + 3;
+                    
+                    for (let i = 0; i < shapeCount; i++) {
+                        const shapeType = Math.random() > 0.5 ? 'cube' : 'pyramid';
+                        const shape = document.createElement('div');
+                        shape.classList.add('shape-3d');
+                        
+                        if (shapeType === 'cube') {
+                            shape.classList.add('cube-3d');
+                        } else {
+                            shape.classList.add('pyramid-3d');
+                        }
+                        
+                        // Random positioning
+                        shape.style.left = (Math.random() * 80 + 10) + '%';
+                        shape.style.top = (Math.random() * 80 + 10) + '%';
+                        
+                        // Random animation delay
+                        shape.style.animationDelay = (Math.random() * 10) + 's';
+                        
+                        // Random size variation
+                        const scale = Math.random() * 0.5 + 0.5;
+                        shape.style.transform = `scale(${scale})`;
+                        
+                        slide.appendChild(shape);
+                    }
+                });
+            }
+
+            // Add mouse parallax effect for 3D depth
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = e.clientX / window.innerWidth - 0.5;
+                const mouseY = e.clientY / window.innerHeight - 0.5;
+                
+                // Move particles with parallax
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach((particle, index) => {
+                    const speed = (index % 3 + 1) * 20;
+                    particle.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+                });
+                
+                // Move 3D shapes with parallax
+                const shapes = document.querySelectorAll('.shape-3d');
+                shapes.forEach((shape, index) => {
+                    const speed = (index % 4 + 1) * 15;
+                    const currentTransform = shape.style.transform || '';
+                    const scaleMatch = currentTransform.match(/scale\([^)]+\)/);
+                    const scale = scaleMatch ? scaleMatch[0] : 'scale(1)';
+                    shape.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px) ${scale}`;
+                });
             });
         });
     </script>
